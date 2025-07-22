@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrowa - Rent Anything, Anywhere</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header - Minimal */
+        .header {
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin-right: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .header-link:hover {
+            color: white;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Hero Section - Simplified */
+        .hero {
+            text-align: center;
+            padding: 3rem 2rem 4rem;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            font-weight: 400;
+        }
+
+        /* Search Section - Like Fat Llama */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            font-size: 1.1rem;
+            color: #333;
+            background: transparent;
+            padding: 0.5rem 0;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-icon {
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        /* Advanced Search Options - Below search bar */
+        .search-options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .search-option {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-option:hover, .search-option.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Categories - Simplified */
+        .categories {
+            background: white;
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .category-pills {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .category-pill {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .category-pill:hover, .category-pill.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        /* Items Grid - Minimal */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .item-image {
+            height: 180px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .item-content {
+            padding: 1.2rem;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.3rem;
+        }
+
+        .item-location {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .item-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .stars {
+            color: #ffd700;
+        }
+
+        /* Footer - Minimal */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* Modal - Simplified */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            margin: -0.5rem -0.5rem 1rem 0;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-actions {
+                gap: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .search-options {
+                gap: 0.5rem;
+            }
+
+            .search-option {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .category-pills {
+                gap: 0.5rem;
+            }
+
+            .category-pill {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <div class="logo-icon">B</div>
+            Borrowa
+        </a>
+        <div class="header-actions">
+            <a href="#" class="header-link" onclick="showModal('loginModal')">Log in</a>
+            <a href="#" class="btn btn-primary" onclick="showModal('listModal')">List item</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Rent instead of buying</h1>
+        <p class="hero-subtitle">Nearby and at times that suit you</p>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search for what you want to rent">
+            </div>
+            
+            <!-- Advanced Search Options -->
+            <div class="search-options">
+                <div class="search-option" onclick="toggleLocation()">
+                    📍 Near Dublin (change)
+                </div>
+                <div class="search-option" onclick="showModal('datesModal')">
+                    📅 Select dates
+                </div>
+                <div class="search-option" onclick="showModal('filtersModal')">
+                    ⚙️ Filters
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <h2 class="section-title">Or browse our most popular categories...</h2>
+        
+        <div class="category-pills">
+            <div class="category-pill active" onclick="filterCategory('all')">All categories</div>
+            <div class="category-pill" onclick="filterCategory('photography')">Film & Photography</div>
+            <div class="category-pill" onclick="filterCategory('tools')">Power Station</div>
+            <div class="category-pill" onclick="filterCategory('cleaning')">Carpet & Upholstery Cleaners</div>
+            <div class="category-pill" onclick="filterCategory('pressure')">Pressure Washer</div>
+            <div class="category-pill" onclick="filterCategory('projector')">Projector</div>
+            <div class="category-pill" onclick="filterCategory('party')">Party Lights</div>
+        </div>
+
+        <!-- Items Grid -->
+        <div class="items-grid">
+            <div class="item-card" onclick="showItemDetails('Canon EOS R5')">
+                <div class="item-image">📸</div>
+                <div class="item-content">
+                    <div class="item-title">Canon EOS R5 Camera</div>
+                    <div class="item-price">€45/day</div>
+                    <div class="item-location">📍 Dublin 2</div>
+                    <div class="item-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span>(24)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="item-card" onclick="showItemDetails('Professional Drill Set')">
+                <div class="item-image">🔨</div>
+                <div class="item-content">
+                    <div class="item-title">Professional Drill Set</div>
+                    <div class="item-price">€15/day</div>
+                    <div class="item-location">📍 Dublin 4</div>
+                    <div class="item-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span>(18)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="item-card" onclick="showItemDetails('MacBook Pro 16-inch')">
+                <div class="item-image">💻</div>
+                <div class="item-content">
+                    <div class="item-title">MacBook Pro 16"</div>
+                    <div class="item-price">€35/day</div>
+                    <div class="item-location">📍 Dublin 1</div>
+                    <div class="item-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span>(31)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="item-card" onclick="showItemDetails('Sound System Package')">
+                <div class="item-image">🔊</div>
+                <div class="item-content">
+                    <div class="item-title">Sound System Package</div>
+                    <div class="item-price">€80/day</div>
+                    <div class="item-location">📍 Dublin 8</div>
+                    <div class="item-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span>(12)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="item-card" onclick="showItemDetails('Projector 4K')">
+                <div class="item-image">📽️</div>
+                <div class="item-content">
+                    <div class="item-title">4K Projector</div>
+                    <div class="item-price">€25/day</div>
+                    <div class="item-location">📍 Dublin 6</div>
+                    <div class="item-rating">
+                        <span class="stars">⭐⭐⭐⭐</span>
+                        <span>(9)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="item-card" onclick="showItemDetails('Pressure Washer')">
+                <div class="item-image">💧</div>
+                <div class="item-content">
+                    <div class="item-title">Pressure Washer</div>
+                    <div class="item-price">€20/day</div>
+                    <div class="item-location">📍 Dublin 7</div>
+                    <div class="item-rating">
+                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                        <span>(15)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">How Borrowa works</a>
+            <a href="#">Guarantee</a>
+            <a href="#">FAQ's</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+        </div>
+        <div class="footer-text">
+            © 2025 Borrowa. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('loginModal')">&times;</span>
+            <h2>Log in or register</h2>
+            <form style="margin-top: 1.5rem;">
+                <input type="email" placeholder="Email" class="form-input">
+                <input type="password" placeholder="Password" class="form-input">
+                <button type="submit" class="btn btn-primary" style="width: 100%; background: #667eea; border: none; padding: 0.8rem;">Continue</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="listModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('listModal')">&times;</span>
+            <h2>Create listing</h2>
+            <form style="margin-top: 1.5rem;">
+                <input type="text" placeholder="Item title" class="form-input">
+                <select class="form-input">
+                    <option>Select category</option>
+                    <option>Film & Photography</option>
+                    <option>Tools & Equipment</option>
+                    <option>Electronics</option>
+                    <option>Party & Events</option>
+                </select>
+                <input type="number" placeholder="Daily rate (€)" class="form-input">
+                <button type="submit" class="btn btn-primary" style="width: 100%; background: #667eea; border: none; padding: 0.8rem;">Create listing</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="datesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('datesModal')">&times;</span>
+            <h2>Select dates</h2>
+            <form style="margin-top: 1.5rem;">
+                <input type="date" class="form-input" placeholder="Start date">
+                <input type="date" class="form-input" placeholder="End date">
+                <button type="submit" class="btn btn-primary" style="width: 100%; background: #667eea; border: none; padding: 0.8rem;">Apply dates</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="filtersModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close" onclick="hideModal('filtersModal')">&times;</span>
+            <h2>Filters</h2>
+            <form style="margin-top: 1.5rem; text-align: left;">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Price range (€/day)</label>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="number" placeholder="Min" class="form-input">
+                        <input type="number" placeholder="Max" class="form-input">
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Distance</label>
+                    <select class="form-input">
+                        <option>Within 5km</option>
+                        <option>Within 10km</option>
+                        <option>Within 25km</option>
+                        <option>Anywhere</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; background: #667eea; border: none; padding: 0.8rem;">Apply filters</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function filterCategory(category) {
+            // Remove active class from all pills
+            document.querySelectorAll('.category-pill').forEach(pill => {
+                pill.classList.remove('active');
+            });
+            
+            // Add active class to clicked pill
+            event.target.classList.add('active');
+            
+            console.log(`Filtering by category: ${category}`);
+        }
+
+        function toggleLocation() {
+            alert('Location selector would open here');
+        }
+
+        function showItemDetails(itemName) {
+            alert(`Showing details for ${itemName}`);
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = this.value;
+                console.log(`Searching for: ${searchTerm}`);
+            }
+        });
+    </script>
+</body>
+</html>
